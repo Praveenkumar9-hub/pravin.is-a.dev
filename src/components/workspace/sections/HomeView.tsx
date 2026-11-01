@@ -103,7 +103,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
                 border: '1px solid var(--electric-blue)',
               }}
             >
-              DEVELOPER / PROGRAMMER
+              ECE STUDENT / DEVELOPER
             </span>
             <span
               className="px-2.5 py-1 rounded-md font-mono text-[11px] font-extrabold tracking-wider"
@@ -113,7 +113,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
                 border: '1px solid var(--violet)',
               }}
             >
-              CYBERSECURITY STUDENT
+              CYBERSECURITY ENTHUSIAST
             </span>
           </div>
 
@@ -135,7 +135,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
               </span>
             </h1>
             <div className="font-space font-bold text-xs sm:text-sm text-[var(--text-secondary)] tracking-wider uppercase mt-1">
-              DEVELOPER / PROGRAMMER / CYBERSECURITY STUDENT
+              ECE STUDENT / DEVELOPER / CYBERSECURITY ENTHUSIAST
             </div>
           </div>
 
@@ -291,7 +291,12 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
                 {/* Smaller, Professionally Cropped Portrait Frame */}
                 <div className="relative mx-auto">
                   {/* Outer Glowing Gradient Ring */}
-                  <div className="relative w-32 h-32 sm:w-36 sm:h-36 rounded-2xl p-1 animated-cyber-border overflow-hidden shadow-xl bg-[var(--secondary)]">
+                  <div
+                    className="relative w-32 h-32 sm:w-36 sm:h-36 rounded-2xl p-1 animated-cyber-border overflow-hidden shadow-xl bg-[var(--secondary)]"
+                    style={{
+                      boxShadow: '0 0 24px -2px rgba(0, 229, 255, 0.45), 0 0 12px 0 rgba(0, 229, 255, 0.25)',
+                    }}
+                  >
                     {/* Laser Scanning Line */}
                     <div
                       className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[var(--neon-cyan)] to-transparent z-10 pointer-events-none"
@@ -300,9 +305,9 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
 
                     {!imgError ? (
                       <img
-                        src="./assets/profile-photo.jpg"
+                        src="./images/profile-cyber.png"
                         alt="Praveenkumar Mokashi"
-                        className="w-full h-full object-cover object-[center_20%] rounded-xl transition-transform duration-500 group-hover:scale-105"
+                        className="w-full h-full object-cover object-center rounded-xl transition-transform duration-500 group-hover:scale-105"
                         onError={() => setImgError(true)}
                       />
                     ) : (
@@ -332,7 +337,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
                     Praveenkumar Mokashi
                   </div>
                   <div className="font-mono text-xs text-[var(--electric-blue)] font-bold tracking-wide">
-                    Developer / Programmer / Cybersecurity Student
+                    ECE Student / Developer / Cybersecurity Enthusiast
                   </div>
                   <div className="font-sans text-xs text-[var(--text-muted)] mt-0.5">
                     Systems Architecture &amp; Defensive Security

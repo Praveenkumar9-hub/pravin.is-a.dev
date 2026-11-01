@@ -1,7 +1,7 @@
 export const PROFILE_DATA = {
   name: 'Praveenkumar Mokashi',
   preferredName: 'Praveen',
-  role: 'Developer / Programmer / Cybersecurity Student',
+  role: 'ECE Student / Developer / Cybersecurity Enthusiast',
   specialization: 'Aspiring Cybersecurity & Cloud Security Professional',
   institution: 'East West Institute of Technology (EWIT)',
   degree: 'Bachelor of Engineering (B.E.) in Electronics & Communication Engineering',
