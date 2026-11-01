@@ -199,6 +199,7 @@ export const ContactView: React.FC = () => {
                 onChange={(e) => setDraftMessage(e.target.value)}
                 placeholder="Click a template above or draft your custom message..."
                 rows={4}
+                maxLength={2000}
                 className="w-full p-3 rounded-xl font-mono text-xs text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none resize-none"
                 style={{
                   background: 'var(--surface)',

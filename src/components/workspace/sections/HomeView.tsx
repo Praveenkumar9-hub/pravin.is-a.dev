@@ -305,8 +305,8 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
 
                     {!imgError ? (
                       <img
-                        src="./images/profile-cyber.png"
-                        alt="Praveenkumar Mokashi"
+                        src="/images/profile.png"
+                        alt="Praveenkumar Mokashi - ECE Student & Cybersecurity Enthusiast"
                         className="w-full h-full object-cover object-center rounded-xl transition-transform duration-500 group-hover:scale-105"
                         onError={() => setImgError(true)}
                       />

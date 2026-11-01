@@ -231,7 +231,7 @@ export const About: React.FC = () => {
                   }}
                 />
                 <img
-                  src="./images/profile-cyber.png"
+                  src="/images/profile.png"
                   alt="Praveenkumar Mokashi"
                   style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
                 />

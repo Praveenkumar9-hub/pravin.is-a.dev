@@ -671,7 +671,7 @@ export const Hero: React.FC = () => {
 
                     {!imgError ? (
                       <img
-                        src="./images/profile-cyber.png"
+                        src="/images/profile.png"
                         alt="Praveenkumar Mokashi"
                         style={{
                           width: '100%',

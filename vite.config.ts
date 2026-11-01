@@ -8,5 +8,8 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-  base: './', // Ensures assets load cleanly on GitHub Pages and relative sub-paths
+  base: '/', // Custom domain pravin.is-a.dev is served from root
+  build: {
+    sourcemap: false, // Prevent exposing unminified source code in production build
+  },
 })

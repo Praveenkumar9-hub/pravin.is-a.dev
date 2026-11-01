@@ -421,6 +421,7 @@ export const Contact: React.FC = () => {
             onChange={(e) => setDraftMessage(e.target.value)}
             placeholder="Click a starter above or write a message here..."
             rows={3}
+            maxLength={2000}
             style={{
               width: '100%',
               padding: '1rem',

@@ -73,8 +73,8 @@ export const QuickLauncher: React.FC<QuickLauncherProps> = ({
                   style={{ background: 'var(--surface)' }}
                 >
                   <img
-                    src="./images/profile-cyber.png"
-                    alt="Praveenkumar Mokashi"
+                    src="/images/profile.png"
+                    alt="Praveenkumar Mokashi - ECE Student & Cybersecurity Enthusiast"
                     className="w-full h-full object-cover object-center"
                     onError={(e) => {
                       (e.target as HTMLElement).style.display = 'none';
