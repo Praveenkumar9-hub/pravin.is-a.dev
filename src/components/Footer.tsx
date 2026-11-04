@@ -33,6 +33,7 @@ export const Footer: React.FC = () => {
             <button
               onClick={scrollToTop}
               className="flex items-center gap-2 text-left cursor-pointer focus:outline-none"
+              aria-label="Praveen.exe homepage - Back to top"
             >
               <BrandLogo variant="horizontal" size="md" />
             </button>

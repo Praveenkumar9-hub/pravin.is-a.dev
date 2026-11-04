@@ -11,5 +11,6 @@ export default defineConfig({
   base: '/', // Custom domain pravin.is-a.dev is served from root
   build: {
     sourcemap: false, // Prevent exposing unminified source code in production build
+    chunkSizeWarningLimit: 800,
   },
 })
