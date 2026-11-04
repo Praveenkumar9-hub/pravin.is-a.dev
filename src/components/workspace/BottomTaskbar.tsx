@@ -1,9 +1,10 @@
 import React from 'react';
-import { Terminal, Shield, FolderCode, Briefcase, Award, Cpu, Mail, Sparkles, ChevronUp } from 'lucide-react';
+import { Terminal, Shield, FolderCode, Briefcase, Award, Cpu, Mail, ChevronUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { playCyberClick, playCyberHover } from '../../utils/cyberAudio';
 import { useDigitalClock } from '../../utils/digitalClock';
 import type { SectionId, WindowState } from './types';
+import { BrandSymbol } from '../common/BrandLogo';
 
 interface BottomTaskbarProps {
   activeSection: SectionId;
@@ -79,7 +80,7 @@ export const BottomTaskbar: React.FC<BottomTaskbarProps> = ({
           }}
           title="Open System Start Menu"
         >
-          <Sparkles className="w-3.5 h-3.5 text-[var(--neon-cyan)] shrink-0" />
+          <BrandSymbol size={15} className="shrink-0" />
           <span className="tracking-wide">START</span>
           <ChevronUp className={`w-3 h-3 transition-transform ${isStartMenuOpen ? 'rotate-180' : ''}`} />
         </motion.button>

@@ -1,0 +1,11 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <linearGradient id="praveenSymGrad" x1="6" y1="4" x2="25" y2="27.5" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00E5FF"/>
+      <stop offset="55%" stop-color="#5865F2"/>
+      <stop offset="100%" stop-color="#8B5CF6"/>
+    </linearGradient>
+  </defs>
+  <!-- P-Shield Monogram with Terminal Prompt Counter -->
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M6 4H18L25 11L19 17H11V24.5L8.5 27.5L6 24.5V4ZM11 8H15.5L18 10.5L15.5 13H11V8Z" fill="url(#praveenSymGrad)"/>
+</svg>

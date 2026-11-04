@@ -1,463 +1,255 @@
 import React from 'react';
-import { GraduationCap, MapPin, Calendar, Shield, Cloud, Terminal, Lock, Key, BrainCircuit } from 'lucide-react';
+import { Shield, Cloud, Terminal, Lock, Key, BrainCircuit, GraduationCap, Award, FolderGit2, FileText, Download } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { playCyberHover } from '../utils/cyberAudio';
+import { SpotlightCard } from './common/SpotlightCard';
 
-const INTERESTS = [
+const PILLARS = [
   {
-    title: 'Cybersecurity',
-    icon: Shield,
-    badge: 'DEFENSE',
-    note: 'NIST CSF & MITRE ATT&CK',
-    color: 'var(--neon-cyan)',
-    bg: 'var(--cyan-dim)',
-    desc: 'Threat surface analysis, defensive modeling, and NIST risk mitigation frameworks.',
-  },
-  {
-    title: 'Cloud Security',
-    icon: Cloud,
-    badge: 'INFRA',
-    note: 'IAM & Cloud Threat Surface',
-    color: 'var(--electric-blue)',
-    bg: 'var(--accent-dim)',
-    desc: 'IAM architecture, cloud vulnerability reduction, and access policies.',
-  },
-  {
-    title: 'Linux & Systems',
+    title: 'Systems & Linux',
     icon: Terminal,
-    badge: 'KERNEL',
-    note: 'POSIX CLI & GCC Internals',
-    color: 'var(--cyber-violet)',
-    bg: 'var(--accent-2-dim)',
-    desc: 'POSIX environments, procedural C programming, shell pipelines, and system internals.',
+    badge: 'SYSTEMS',
+    color: 'var(--electric-blue)',
+    desc: 'Writing clean code in ANSI C, navigating POSIX shells, managing memory, and compiling with GCC.',
   },
   {
-    title: 'Information Security',
-    icon: Lock,
-    badge: 'GOVERNANCE',
-    note: 'CIA Triad & Access Control',
-    color: 'var(--terminal-green)',
-    bg: 'var(--mint-dim)',
-    desc: 'The CIA Triad, identity governance, access control models, and security hygiene.',
+    title: 'Defensive Security',
+    icon: Shield,
+    badge: 'SECURITY',
+    color: 'var(--neon-cyan)',
+    desc: 'Analyzing attack surfaces, applying the NIST framework, and understanding how attackers think.',
+  },
+  {
+    title: 'Python & Automation',
+    icon: BrainCircuit,
+    badge: 'AUTOMATION',
+    color: 'var(--green)',
+    desc: 'Building automated scripts, telemetry data parsing, and predictive threat scoring with ML.',
   },
   {
     title: 'Cryptography',
     icon: Key,
     badge: 'CIPHERS',
-    note: 'SHA-256 & PKI Primitives',
-    color: 'var(--neon-cyan)',
-    bg: 'var(--cyan-dim)',
-    desc: 'Symmetric & asymmetric encryption, cryptographic hashing (SHA-256), and PKI.',
+    color: 'var(--electric-blue)',
+    desc: 'Symmetric and asymmetric encryption, SHA-256 cryptographic hashing, and security keys.',
   },
   {
-    title: 'AI & Machine Learning',
-    icon: BrainCircuit,
-    badge: 'PREDICTIVE',
-    note: 'Temporal Anomaly Forecasting',
-    color: 'var(--electric-blue)',
-    bg: 'var(--accent-dim)',
-    desc: 'Supervised classification, anomaly modeling, and predictive attack forecasting.',
+    title: 'Cloud Foundations',
+    icon: Cloud,
+    badge: 'CLOUD',
+    color: 'var(--violet)',
+    desc: 'IAM access control, cloud fundamentals, decoupled services, and safe web deployment.',
+  },
+  {
+    title: 'InfoSec Principles',
+    icon: Lock,
+    badge: 'GOVERNANCE',
+    color: 'var(--neon-cyan)',
+    desc: 'Applying the CIA Triad (Confidentiality, Integrity, Availability) to protect infrastructure.',
   },
 ];
 
-export const About: React.FC = () => {
-  return (
-    <section
-      id="about"
-      style={{
-        padding: '6rem 0',
-        borderBottom: '1px solid var(--border)',
-        background: 'var(--bg)',
-        position: 'relative',
-        overflow: 'hidden',
-      }}
-    >
-      {/* Ghost Number */}
-      <span
-        className="ghost-num"
-        style={{
-          position: 'absolute',
-          right: '3%',
-          top: '6%',
-          fontSize: 'clamp(7rem, 18vw, 14rem)',
-          pointerEvents: 'none',
-          userSelect: 'none',
-          opacity: 0.35,
-        }}
-      >
-        01
-      </span>
+interface AboutProps {
+  onOpenResume?: () => void;
+}
 
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 1.5rem', position: 'relative', zIndex: 1 }}>
+export const About: React.FC<AboutProps> = ({ onOpenResume }) => {
+  return (
+    <section id="about" className="py-20 border-t border-[var(--border)] relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
-          style={{ paddingBottom: '2.5rem', borderBottom: '1px solid var(--border)', marginBottom: '3.5rem' }}
-          className="flex flex-col md:flex-row md:items-end justify-between gap-6"
+          transition={{ duration: 0.4 }}
+          className="flex flex-col gap-2 mb-12 text-left"
         >
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.75rem' }}>
-              <span
-                style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: 2,
-                  background: 'var(--cyber-violet)',
-                  boxShadow: '0 0 10px var(--cyber-violet)',
-                }}
-              />
-              <span
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 11,
-                  color: 'var(--cyber-violet)',
-                  fontWeight: 800,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.08em',
-                }}
-              >
-                PLAYER BACKGROUND // 001
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[var(--neon-cyan)]" />
+            <span className="font-mono text-xs font-bold text-[var(--neon-cyan)] uppercase tracking-wider">
+              About Me
+            </span>
+          </div>
+          <h2 className="font-space font-extrabold text-3xl sm:text-4xl text-[var(--text-primary)] m-0">
+            Background &amp; Focus
+          </h2>
+          <p className="font-sans text-sm sm:text-base text-[var(--text-secondary)] max-w-2xl mt-1">
+            A quick overview of what I study, how I build software, and the areas I focus on.
+          </p>
+        </motion.div>
+
+        {/* Narrative & Stats Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+          {/* Left Narrative Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.45 }}
+            className="lg:col-span-7 p-6 sm:p-8 rounded-2xl flex flex-col gap-4 text-left"
+            style={{
+              background: 'var(--surface)',
+              border: '1px solid var(--border)',
+              boxShadow: 'var(--shadow-sm)',
+            }}
+          >
+            <div className="flex items-center gap-2.5 font-space font-bold text-lg text-[var(--text-primary)]">
+              <GraduationCap className="w-5 h-5 text-[var(--electric-blue)]" />
+              <span>Engineering Journey</span>
+            </div>
+
+            <p className="font-sans text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed m-0">
+              I am an Electronics &amp; Communication Engineering student at{' '}
+              <strong className="text-[var(--text-primary)] font-semibold">East West Institute of Technology (EWIT)</strong>{' '}
+              in Bengaluru (graduating 2028). I like digging into how computers actually function — from how operating systems schedule tasks to how memory is managed in C.
+            </p>
+
+            <p className="font-sans text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed m-0">
+              Instead of just copying tutorials, I enjoy building projects that solve concrete problems: predicting network attacks before they occur, automating repetitive workflows in Python, and building clean full-stack web applications.
+            </p>
+
+            <div className="pt-2 flex flex-wrap items-center gap-2 text-xs font-mono font-medium">
+              <span className="px-3 py-1 rounded-lg bg-[var(--accent-dim)] text-[var(--electric-blue)] border border-[var(--electric-blue)]">
+                B.E. ECE (2024–2028)
+              </span>
+              <span className="px-3 py-1 rounded-lg bg-[var(--cyan-dim)] text-[var(--neon-cyan)] border border-[var(--neon-cyan)]">
+                East West Institute of Technology
+              </span>
+              <span className="px-3 py-1 rounded-lg bg-[var(--mint-dim)] text-[var(--green)] border border-[var(--green)]">
+                Bengaluru, India
               </span>
             </div>
 
-            <h2
-              style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                fontWeight: 800,
-                fontSize: 'clamp(2rem, 4vw, 3.5rem)',
-                letterSpacing: '-0.03em',
-                color: 'var(--text-primary)',
-                margin: 0,
-                lineHeight: 1.1,
-              }}
-            >
-              BEHIND THE CODE.
-            </h2>
-
-            <p
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: '1.1rem',
-                color: 'var(--text-primary)',
-                marginTop: '1rem',
-                maxWidth: 620,
-                lineHeight: 1.6,
-                fontWeight: 500,
-              }}
-            >
-              "I'm an Electronics and Communication Engineering student interested in programming, Linux, cybersecurity and cloud technologies."
-            </p>
-          </div>
-
-          <div
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: 10,
-              color: 'var(--text-muted)',
-              background: 'var(--surface)',
-              border: '1px solid var(--border)',
-              borderRadius: 8,
-              padding: '0.45rem 0.85rem',
-              letterSpacing: '0.05em',
-            }}
-          >
-            EWIT // BENGALURU // 2028
-          </div>
-        </motion.div>
-
-        {/* Visually Interesting Split Layout with Portrait & Technical Annotations */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16 items-center">
-          {/* Left: Compact Portrait Card with Technical HUD Annotations */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.55 }}
-            className="lg:col-span-5 flex justify-center"
-          >
-            <div
-              className="clay relative p-6 w-full max-w-sm"
-              style={{
-                background: 'var(--surface)',
-                borderRadius: '1.4rem',
-                border: '1px solid var(--border)',
-              }}
-            >
-              <div className="hud-corner-tl" />
-              <div className="hud-corner-br" />
-
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  paddingBottom: '0.75rem',
-                  borderBottom: '1px solid var(--border)',
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 10,
-                  color: 'var(--text-muted)',
-                  marginBottom: '1rem',
-                }}
-              >
-                <span>OPERATOR_ID</span>
-                <span style={{ color: 'var(--neon-cyan)', fontWeight: 800 }}>PKM // 2028</span>
-              </div>
-
-              {/* Portrait Image */}
-              <div
-                style={{
-                  width: '100%',
-                  aspectRatio: '1/1',
-                  borderRadius: '1rem',
-                  overflow: 'hidden',
-                  position: 'relative',
-                  border: '2px solid var(--electric-blue)',
-                  marginBottom: '1rem',
-                  boxShadow: '0 8px 24px -4px color-mix(in srgb, var(--electric-blue) 35%, transparent)',
-                }}
-              >
-                <div
-                  style={{
-                    position: 'absolute',
-                    left: 0,
-                    right: 0,
-                    height: 2,
-                    background: 'linear-gradient(to right, transparent, var(--neon-cyan), transparent)',
-                    zIndex: 10,
-                    animation: 'scanLine 3.5s linear infinite',
-                  }}
-                />
-                <img
-                  src="/images/profile.png"
-                  alt="Praveenkumar Mokashi"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
-                />
-              </div>
-
-              {/* Name & Academic Status */}
-              <div style={{ textAlign: 'center' }}>
-                <div
-                  style={{
-                    fontFamily: "'Space Grotesk', sans-serif",
-                    fontWeight: 800,
-                    fontSize: '1.25rem',
-                    color: 'var(--text-primary)',
-                  }}
+            {onOpenResume && (
+              <div className="pt-2 flex flex-wrap items-center gap-2.5">
+                <button
+                  onClick={onOpenResume}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold text-[var(--electric-blue)] hover:text-white bg-[var(--surface)] hover:bg-[var(--electric-blue)] border border-[var(--electric-blue)] transition-all cursor-pointer"
                 >
-                  Praveenkumar Mokashi
-                </div>
-                <div
-                  style={{
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: 10,
-                    color: 'var(--neon-cyan)',
-                    marginTop: 3,
-                    fontWeight: 700,
-                  }}
+                  <FileText className="w-3.5 h-3.5" />
+                  <span>View / Print Full Resume</span>
+                </button>
+                <a
+                  href={`${import.meta.env.BASE_URL}Praveen_resume.pdf`}
+                  download="Praveen_resume.pdf"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-[var(--text-secondary)] hover:text-white bg-[var(--surface)] hover:bg-[var(--secondary)] border border-[var(--border)] hover:border-[var(--neon-cyan)] transition-all cursor-pointer"
+                  title="Download Praveen_resume.pdf"
                 >
-                  EAST WEST INSTITUTE OF TECHNOLOGY
-                </div>
+                  <Download className="w-3.5 h-3.5 text-[var(--neon-cyan)]" />
+                  <span>Download PDF</span>
+                </a>
               </div>
-            </div>
+            )}
           </motion.div>
 
-          {/* Right: Academic Specifications & Core Philosophy */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.55 }}
-            className="lg:col-span-7 flex flex-col gap-5"
-          >
-            {/* Institution Badge Card */}
-            <div
-              className="clay p-6"
+          {/* Right Highlights Cards */}
+          <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.45, delay: 0.1 }}
+              className="p-5 rounded-2xl flex items-center gap-4 text-left"
               style={{
                 background: 'var(--surface)',
-                borderRadius: '1.25rem',
                 border: '1px solid var(--border)',
+                boxShadow: 'var(--shadow-sm)',
               }}
             >
-              <div
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 10,
-                  color: 'var(--electric-blue)',
-                  fontWeight: 800,
-                  letterSpacing: '0.06em',
-                  marginBottom: 8,
-                }}
-              >
-                ACADEMIC INSTITUTION
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-[var(--accent-dim)] text-[var(--electric-blue)] shrink-0">
+                <FolderGit2 className="w-6 h-6" />
               </div>
-
-              <div
-                style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  fontWeight: 800,
-                  fontSize: '1.35rem',
-                  color: 'var(--text-primary)',
-                  lineHeight: 1.25,
-                }}
-              >
-                East West Institute of Technology
-              </div>
-
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  gap: '1rem',
-                  marginTop: '0.85rem',
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 11,
-                  color: 'var(--text-secondary)',
-                }}
-              >
-                <div className="flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-[var(--cyber-violet)]" />
-                  <span>Bengaluru, India</span>
+              <div>
+                <div className="font-space font-extrabold text-2xl text-[var(--text-primary)]">
+                  6+ Projects
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <GraduationCap className="w-3.5 h-3.5 text-[var(--neon-cyan)]" />
-                  <span>Department of ECE</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <Calendar className="w-3.5 h-3.5 text-[var(--terminal-green)]" />
-                  <span>Expected Graduation: 2028</span>
+                <div className="font-sans text-xs text-[var(--text-secondary)]">
+                  Systems, security &amp; full-stack software.
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-            {/* Core Philosophy Card */}
-            <div
-              className="clay p-6"
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.45, delay: 0.15 }}
+              className="p-5 rounded-2xl flex items-center gap-4 text-left"
               style={{
                 background: 'var(--surface)',
-                borderRadius: '1.25rem',
                 border: '1px solid var(--border)',
+                boxShadow: 'var(--shadow-sm)',
               }}
             >
-              <div
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 10,
-                  color: 'var(--terminal-green)',
-                  fontWeight: 800,
-                  letterSpacing: '0.06em',
-                  marginBottom: 8,
-                }}
-              >
-                ENGINEERING APPROACH
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-[var(--cyan-dim)] text-[var(--neon-cyan)] shrink-0">
+                <Award className="w-6 h-6" />
               </div>
-
-              <p
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: '0.95rem',
-                  color: 'var(--text-secondary)',
-                  lineHeight: 1.6,
-                  margin: 0,
-                }}
-              >
-                Approaching technology through hands-on system building. From writing procedural C programs in Linux terminal environments to designing AI-driven network attack forecasting models, every project is a deliberate step toward mastering cybersecurity architecture and cloud defense.
-              </p>
-            </div>
-          </motion.div>
+              <div>
+                <div className="font-space font-extrabold text-2xl text-[var(--text-primary)]">
+                  8 Credentials
+                </div>
+                <div className="font-sans text-xs text-[var(--text-secondary)]">
+                  Verified certificates from Google, Cisco, Infosys &amp; Ethnotech.
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
 
-        {/* 6 Technical Interests Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {INTERESTS.map((item, idx) => {
-            const Icon = item.icon;
+        {/* 6 Core Competency Pillars with Dynamic Spotlight */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {PILLARS.map((p, idx) => {
+            const Icon = p.icon;
             return (
               <motion.div
-                key={item.title}
+                key={p.title}
                 initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.45, delay: idx * 0.05 }}
-                onMouseEnter={playCyberHover}
-                className="clay clay-hover relative p-6"
-                style={{
-                  background: 'var(--surface)',
-                  borderRadius: '1.25rem',
-                  border: '1px solid var(--border)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  gap: '1rem',
-                }}
+                transition={{ duration: 0.4, delay: idx * 0.05 }}
+                whileHover={{ y: -4, transition: { type: 'spring', stiffness: 350, damping: 25 } }}
+                className="h-full"
               >
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                <SpotlightCard
+                  spotlightColor={`${p.color}25`}
+                  className="p-5 rounded-2xl flex flex-col gap-3 text-left transition-all duration-300 hover:shadow-xl hover:border-[var(--electric-blue)] h-full"
+                  style={{
+                    background: 'var(--surface)',
+                    border: '1px solid var(--border)',
+                    boxShadow: 'var(--shadow-sm)',
+                  }}
+                >
+                  <div className="flex items-center justify-between">
                     <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
                       style={{
-                        padding: '0.55rem',
-                        borderRadius: 10,
-                        background: item.bg,
-                        color: item.color,
-                        border: `1px solid color-mix(in srgb, ${item.color} 30%, transparent)`,
+                        background: 'var(--secondary)',
+                        border: '1px solid var(--border)',
+                        color: p.color,
                       }}
                     >
                       <Icon className="w-5 h-5" />
                     </div>
-
                     <span
+                      className="font-mono text-[10px] font-bold px-2 py-0.5 rounded-full uppercase"
                       style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: 9,
-                        fontWeight: 800,
-                        color: item.color,
-                        letterSpacing: '0.06em',
-                        padding: '0.15rem 0.45rem',
-                        borderRadius: 4,
-                        background: item.bg,
+                        color: p.color,
+                        background: 'rgba(255, 255, 255, 0.03)',
+                        border: '1px solid var(--border)',
                       }}
                     >
-                      {item.badge}
+                      {p.badge}
                     </span>
                   </div>
 
-                  <h4
-                    style={{
-                      fontFamily: "'Space Grotesk', sans-serif",
-                      fontWeight: 800,
-                      fontSize: '1.15rem',
-                      color: 'var(--text-primary)',
-                      margin: '0 0 0.4rem',
-                    }}
-                  >
-                    {item.title}
-                  </h4>
+                  <div className="font-space font-bold text-base text-[var(--text-primary)]">
+                    {p.title}
+                  </div>
 
-                  <p
-                    style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: '0.82rem',
-                      color: 'var(--text-secondary)',
-                      lineHeight: 1.5,
-                      margin: 0,
-                    }}
-                  >
-                    {item.desc}
+                  <p className="font-sans text-xs text-[var(--text-secondary)] leading-relaxed m-0">
+                    {p.desc}
                   </p>
-                </div>
-
-                <div
-                  style={{
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: 9,
-                    color: 'var(--text-muted)',
-                    borderTop: '1px solid var(--border)',
-                    paddingTop: '0.65rem',
-                  }}
-                >
-                  {item.note}
-                </div>
+                </SpotlightCard>
               </motion.div>
             );
           })}

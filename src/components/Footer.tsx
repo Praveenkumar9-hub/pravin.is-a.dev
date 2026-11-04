@@ -1,211 +1,115 @@
 import React from 'react';
-import { ArrowUp, Terminal } from 'lucide-react';
-import { playCyberClick, playCyberHover } from '../utils/cyberAudio';
-import { LinuxLogo, PythonLogo, CloudLogo, CLogo } from './common/TechLogos';
+import { ArrowUp, Mail } from 'lucide-react';
+import { BrandLogo } from './common/BrandLogo';
+import { GithubIcon, LinkedinIcon } from './common/SocialIcons';
+
+const CURRENT_YEAR = new Date().getFullYear();
 
 export const Footer: React.FC = () => {
   const scrollToTop = () => {
-    playCyberClick(880, 0.04);
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     });
   };
 
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const offset = el.getBoundingClientRect().top + window.pageYOffset - 80;
+    window.scrollTo({ top: offset, behavior: 'smooth' });
+  };
+
   return (
     <footer
-      style={{
-        padding: '3.5rem 0 2.5rem',
-        borderTop: '1px solid var(--border)',
-        background: 'var(--surface-alt, var(--bg))',
-        fontFamily: "'JetBrains Mono', monospace",
-        fontSize: 11,
-        color: 'var(--text-secondary)',
-      }}
+      className="border-t border-[var(--border)] py-12 relative z-10 text-left"
+      style={{ background: 'var(--surface)' }}
     >
-      <div
-        style={{
-          maxWidth: 1280,
-          margin: '0 auto',
-          padding: '0 1.5rem',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '2rem',
-        }}
-      >
-        {/* Technology Signature Strip */}
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '1rem',
-            paddingBottom: '1.5rem',
-            borderBottom: '1px solid var(--border)',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-            <span style={{ color: 'var(--text-muted)', fontSize: 10, letterSpacing: '0.08em' }}>
-              TECHNOLOGY SIGNATURE:
-            </span>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col gap-8">
+        {/* Top Footer Row: Brand, Nav & Socials */}
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-8 border-b border-[var(--border)]">
+          {/* Brand Lockup */}
+          <div className="flex flex-col gap-2">
+            <button
+              onClick={scrollToTop}
+              className="flex items-center gap-2 text-left cursor-pointer focus:outline-none"
+            >
+              <BrandLogo variant="horizontal" size="md" />
+            </button>
+            <p className="font-sans text-xs text-[var(--text-secondary)] m-0 max-w-sm">
+              Electronics &amp; Communication Engineering student, systems developer, and cybersecurity enthusiast at East West Institute of Technology.
+            </p>
           </div>
 
-          {/* 4 Official Technology Logos */}
-          <div className="flex flex-wrap items-center gap-4 sm:gap-6">
-            {/* Linux */}
-            <div
-              onMouseEnter={playCyberHover}
-              className="flex items-center gap-2 px-2.5 py-1 rounded-md cursor-default"
-              style={{
-                background: 'rgba(255, 165, 0, 0.08)',
-                border: '1px solid rgba(255, 165, 0, 0.25)',
-              }}
-              title="Linux System Environment"
-            >
-              <LinuxLogo size={16} />
-              <span style={{ color: '#FFA500', fontWeight: 700, fontSize: 10 }}>LINUX</span>
-            </div>
-
-            {/* Python */}
-            <div
-              onMouseEnter={playCyberHover}
-              className="flex items-center gap-2 px-2.5 py-1 rounded-md cursor-default"
-              style={{
-                background: 'rgba(56, 126, 184, 0.08)',
-                border: '1px solid rgba(56, 126, 184, 0.25)',
-              }}
-              title="Python Automation & ML"
-            >
-              <PythonLogo size={16} />
-              <span style={{ color: '#387EB8', fontWeight: 700, fontSize: 10 }}>PYTHON</span>
-            </div>
-
-            {/* Cloud */}
-            <div
-              onMouseEnter={playCyberHover}
-              className="flex items-center gap-2 px-2.5 py-1 rounded-md cursor-default"
-              style={{
-                background: 'rgba(0, 229, 255, 0.08)',
-                border: '1px solid rgba(0, 229, 255, 0.25)',
-              }}
-              title="Cloud Infrastructure & Security"
-            >
-              <CloudLogo size={16} />
-              <span style={{ color: 'var(--neon-cyan)', fontWeight: 700, fontSize: 10 }}>CLOUD</span>
-            </div>
-
-            {/* C Programming */}
-            <div
-              onMouseEnter={playCyberHover}
-              className="flex items-center gap-2 px-2.5 py-1 rounded-md cursor-default"
-              style={{
-                background: 'rgba(0, 89, 156, 0.08)',
-                border: '1px solid rgba(0, 89, 156, 0.25)',
-              }}
-              title="C Procedural Systems"
-            >
-              <CLogo size={16} />
-              <span style={{ color: '#5294E2', fontWeight: 700, fontSize: 10 }}>C LANG</span>
-            </div>
+          {/* Quick Nav Links */}
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-sans text-[var(--text-secondary)]">
+            <button onClick={() => scrollTo('home')} className="hover:text-[var(--text-primary)] transition-colors">
+              Home
+            </button>
+            <button onClick={() => scrollTo('about')} className="hover:text-[var(--text-primary)] transition-colors">
+              About
+            </button>
+            <button onClick={() => scrollTo('projects')} className="hover:text-[var(--text-primary)] transition-colors">
+              Projects
+            </button>
+            <button onClick={() => scrollTo('experience')} className="hover:text-[var(--text-primary)] transition-colors">
+              Experience
+            </button>
+            <button onClick={() => scrollTo('certificates')} className="hover:text-[var(--text-primary)] transition-colors">
+              Certificates
+            </button>
+            <button onClick={() => scrollTo('skills')} className="hover:text-[var(--text-primary)] transition-colors">
+              Skills
+            </button>
+            <button onClick={() => scrollTo('contact')} className="hover:text-[var(--text-primary)] transition-colors">
+              Contact
+            </button>
           </div>
         </div>
 
-        {/* Main Footer Metadata Bar */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          {/* Left Branding */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-            <div
-              style={{
-                width: 24,
-                height: 24,
-                borderRadius: 6,
-                background: 'linear-gradient(135deg, var(--electric-blue), var(--cyber-violet))',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Terminal className="w-3.5 h-3.5 text-white" />
-            </div>
-            <span
-              style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                fontWeight: 800,
-                fontSize: '0.95rem',
-                color: 'var(--text-primary)',
-              }}
-            >
-              PRAVEEN // NEXUS
-            </span>
-            <span style={{ color: 'var(--neon-cyan)', fontWeight: 800 }}>
-              © {new Date().getFullYear()}
-            </span>
+        {/* Bottom Footer Row: Meta & Back to top */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[var(--text-muted)]">
+          <div className="flex flex-wrap items-center gap-2">
+            <span>© {CURRENT_YEAR} Praveenkumar Mokashi.</span>
+            <span>·</span>
+            <span>EWIT Bengaluru, Class of 2028</span>
           </div>
 
-          {/* Center Institution Info */}
-          <div
-            style={{
-              textAlign: 'center',
-              fontSize: 10,
-              color: 'var(--text-muted)',
-              letterSpacing: '0.04em',
-            }}
-          >
-            PRAVEENKUMAR MOKASHI · EWIT BENGALURU · CLASS OF 2028
-          </div>
-
-          {/* Right Links & Back to Top */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', fontSize: 11 }}>
-            <a
-              href="mailto:thepraveenm09@gmail.com"
-              onMouseEnter={playCyberHover}
-              style={{ color: 'var(--text-secondary)', transition: 'color 0.2s', fontWeight: 700 }}
-              className="hover:text-[var(--neon-cyan)]"
-            >
-              EMAIL
-            </a>
-
+          <div className="flex items-center gap-4">
             <a
               href="https://github.com/Praveenkumar9-hub"
               target="_blank"
               rel="noopener noreferrer"
-              onMouseEnter={playCyberHover}
-              style={{ color: 'var(--text-secondary)', transition: 'color 0.2s', fontWeight: 700 }}
-              className="hover:text-[var(--neon-cyan)]"
+              className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              aria-label="GitHub Profile"
             >
-              GITHUB
+              <GithubIcon className="w-4 h-4" />
             </a>
 
             <a
               href="https://www.linkedin.com/in/try-to-hack-praveen/"
               target="_blank"
               rel="noopener noreferrer"
-              onMouseEnter={playCyberHover}
-              style={{ color: 'var(--text-secondary)', transition: 'color 0.2s', fontWeight: 700 }}
-              className="hover:text-[var(--neon-cyan)]"
+              className="text-[var(--text-secondary)] hover:text-[var(--neon-cyan)] transition-colors"
+              aria-label="LinkedIn Profile"
             >
-              LINKEDIN
+              <LinkedinIcon className="w-4 h-4" />
+            </a>
+
+            <a
+              href="mailto:thepraveenm09@gmail.com"
+              className="text-[var(--text-secondary)] hover:text-[var(--electric-blue)] transition-colors"
+              aria-label="Email Praveenkumar"
+            >
+              <Mail className="w-4 h-4" />
             </a>
 
             <button
               onClick={scrollToTop}
-              onMouseEnter={playCyberHover}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 4,
-                color: 'var(--neon-cyan)',
-                fontWeight: 800,
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontFamily: 'inherit',
-                fontSize: 'inherit',
-              }}
-              className="hover:underline"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--secondary)] text-[var(--text-primary)] hover:border-[var(--electric-blue)] transition-all cursor-pointer font-sans text-xs ml-2"
+              title="Back to top"
             >
-              <span>TOP</span>
+              <span>Back to Top</span>
               <ArrowUp className="w-3.5 h-3.5" />
             </button>
           </div>

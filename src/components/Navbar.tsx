@@ -1,403 +1,267 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Menu, X, Sun, Moon, Volume2, VolumeX, Terminal } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Menu, X, Sun, Moon, ArrowUpRight, FileText } from 'lucide-react';
+import { motion, AnimatePresence, useScroll } from 'framer-motion';
 import { useTheme } from '../contexts/ThemeContext';
-import { isSoundEnabled, toggleSound, playCyberClick, playCyberHover } from '../utils/cyberAudio';
+import { BrandLogo } from './common/BrandLogo';
 
-interface NavbarProps {
-  activeSection: string;
+interface NavItem {
+  id: string;
+  label: string;
 }
 
-const NAV_LINKS = [
-  { id: 'home', label: 'HOME' },
-  { id: 'profile', label: 'PROFILE' },
-  { id: 'projects', label: 'PROJECTS' },
-  { id: 'tech-stack', label: 'TECH STACK' },
-  { id: 'journey', label: 'JOURNEY' },
-  { id: 'contact', label: 'CONTACT' },
+const NAV_ITEMS: NavItem[] = [
+  { id: 'home', label: 'Home' },
+  { id: 'about', label: 'About' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'experience', label: 'Experience' },
+  { id: 'certificates', label: 'Certificates' },
+  { id: 'skills', label: 'Skills' },
+  { id: 'contact', label: 'Contact' },
 ];
 
-function useISTClock() {
-  const [time, setTime] = useState('');
-
-  useEffect(() => {
-    const update = () => {
-      const now = new Date();
-      // Formatted in Asia/Kolkata timezone: 31 OCT 2026 // 04:30:25 PM IST
-      const dateStr = now
-        .toLocaleDateString('en-GB', {
-          timeZone: 'Asia/Kolkata',
-          day: '2-digit',
-          month: 'short',
-          year: 'numeric',
-        })
-        .toUpperCase();
-
-      const timeStr = now.toLocaleTimeString('en-US', {
-        timeZone: 'Asia/Kolkata',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: true,
-      });
-
-      setTime(`${dateStr} // ${timeStr} IST`);
-    };
-
-    update();
-    const id = setInterval(update, 1000);
-    return () => clearInterval(id);
-  }, []);
-
-  return time;
+interface NavbarProps {
+  activeSection?: string;
+  onOpenResume?: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
+export const Navbar: React.FC<NavbarProps> = ({ onOpenResume }) => {
   const { theme, toggleTheme } = useTheme();
+  const [activeTab, setActiveTab] = useState('home');
   const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [soundOn, setSoundOn] = useState(() => isSoundEnabled());
-  const time = useISTClock();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { scrollYProgress } = useScroll();
 
+  // Scroll spy: Update active tab based on viewport scroll position
   useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > 30);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+
+      const scrollPosition = window.scrollY + 140;
+      for (let i = NAV_ITEMS.length - 1; i >= 0; i--) {
+        const sectionId = NAV_ITEMS[i].id;
+        const el = document.getElementById(sectionId);
+        if (el) {
+          const top = el.offsetTop;
+          if (scrollPosition >= top) {
+            setActiveTab(sectionId);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleSoundToggle = () => {
-    const newState = toggleSound();
-    setSoundOn(newState);
-  };
-
   const scrollTo = useCallback((id: string) => {
-    playCyberClick(900, 0.04);
-    setMobileOpen(false);
+    setMobileMenuOpen(false);
+    setActiveTab(id);
     const el = document.getElementById(id);
-    if (!el) return;
-    const offset = el.getBoundingClientRect().top + window.pageYOffset - 76;
+    if (!el) {
+      if (id === 'home') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
+    const offset = el.getBoundingClientRect().top + window.pageYOffset - 80;
     window.scrollTo({ top: offset, behavior: 'smooth' });
   }, []);
 
   return (
     <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? 'py-2.5 backdrop-blur-xl border-b shadow-sm'
+          : 'py-4 bg-transparent'
+      }`}
       style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 50,
-        transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
         backgroundColor: isScrolled
           ? theme === 'light'
-            ? 'rgba(245, 244, 240, 0.92)'
-            : 'rgba(8, 10, 18, 0.92)'
+            ? 'rgba(255, 255, 255, 0.88)'
+            : 'rgba(8, 11, 22, 0.88)'
           : 'transparent',
-        backdropFilter: isScrolled ? 'blur(16px)' : 'none',
-        WebkitBackdropFilter: isScrolled ? 'blur(16px)' : 'none',
-        borderBottom: isScrolled ? '1px solid var(--border)' : '1px solid transparent',
-        boxShadow: isScrolled ? 'var(--shadow-sm)' : 'none',
+        borderColor: isScrolled ? 'var(--border)' : 'transparent',
       }}
     >
-      <div
-        style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem' }}
-        className="flex items-center justify-between h-16 sm:h-[4.5rem]"
-      >
-        {/* Left: PRAVEEN.EXE Brand */}
+      {/* Precision Scroll Progress Laser Bar */}
+      <motion.div
+        style={{ scaleX: scrollYProgress, transformOrigin: '0%' }}
+        className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[var(--neon-cyan)] via-[var(--electric-blue)] to-[var(--violet)] z-50 pointer-events-none"
+      />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-4">
+        {/* Left: Brand Logo Lockup */}
         <button
           onClick={() => scrollTo('home')}
-          onMouseEnter={playCyberHover}
-          className="flex items-center gap-2.5 group cursor-pointer focus:outline-none"
-          style={{ background: 'none', border: 'none', padding: 0 }}
+          className="flex items-center gap-2 group cursor-pointer focus:outline-none"
+          aria-label="Praveen.exe home"
         >
-          {/* Futuristic Hex/Notch Icon */}
-          <div
-            style={{
-              width: 34,
-              height: 34,
-              borderRadius: 8,
-              background: 'linear-gradient(135deg, var(--electric-blue), var(--cyber-violet))',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 0 16px -2px color-mix(in srgb, var(--electric-blue) 60%, transparent)',
-              flexShrink: 0,
-              border: '1px solid var(--neon-cyan)',
-              transition: 'transform 0.2s ease',
-            }}
-            className="group-hover:scale-105"
-          >
-            <Terminal className="w-4 h-4 text-white" />
-          </div>
-          <div className="flex items-center gap-1">
-            <span
-              style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                fontWeight: 800,
-                fontSize: '1.15rem',
-                color: 'var(--text-primary)',
-                letterSpacing: '-0.02em',
-                transition: 'color 0.2s',
-              }}
-              className="group-hover:text-[var(--neon-cyan)]"
-            >
-              PRAVEEN.NEXUS
-            </span>
-          </div>
+          <BrandLogo variant="horizontal" size="md" />
         </button>
 
-        {/* Center: Desktop Navigation Links with Animated Pill Indicator */}
+        {/* Center: Desktop Navigation Tabs */}
         <nav
-          aria-label="Main Navigation"
-          className="hidden md:flex items-center gap-1"
+          className="hidden md:flex items-center gap-1 p-1 rounded-full"
           style={{
-            background: 'var(--surface)',
+            background:
+              theme === 'light'
+                ? 'rgba(235, 241, 251, 0.75)'
+                : 'rgba(21, 27, 43, 0.75)',
             border: '1px solid var(--border)',
-            borderRadius: 999,
-            padding: '0.35rem 0.6rem',
-            boxShadow: 'var(--shadow-sm), var(--clay-specular)',
+            boxShadow: 'var(--shadow-sm)',
           }}
         >
-          {NAV_LINKS.map((link) => {
-            const isActive = activeSection === link.id;
+          {NAV_ITEMS.map((item) => {
+            const isActive = activeTab === item.id;
             return (
               <button
-                key={link.id}
-                onClick={() => scrollTo(link.id)}
-                onMouseEnter={playCyberHover}
-                className="relative px-4 py-1.5 rounded-full cursor-pointer focus:outline-none"
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 11,
-                  fontWeight: isActive ? 700 : 500,
-                  letterSpacing: '0.04em',
-                  color: isActive ? '#FFFFFF' : 'var(--text-secondary)',
-                  background: 'none',
-                  border: 'none',
-                  transition: 'color 0.2s',
-                }}
+                key={item.id}
+                onClick={() => scrollTo(item.id)}
+                className={`relative px-3.5 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer focus:outline-none ${
+                  isActive
+                    ? 'text-[var(--text-primary)] font-semibold'
+                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                }`}
               >
                 {isActive && (
                   <motion.div
-                    layoutId="activeNavBg"
+                    layoutId="activeNavPill"
+                    className="absolute inset-0 rounded-full"
                     style={{
-                      position: 'absolute',
-                      inset: 0,
-                      borderRadius: 999,
-                      background: 'linear-gradient(135deg, var(--electric-blue), var(--cyber-violet))',
-                      boxShadow: '0 4px 14px color-mix(in srgb, var(--electric-blue) 45%, transparent)',
+                      background:
+                        theme === 'light'
+                          ? '#FFFFFF'
+                          : 'var(--cards)',
+                      border: '1px solid var(--border)',
+                      boxShadow: '0 2px 8px -2px rgba(0, 229, 255, 0.25)',
                     }}
-                    transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+                    transition={{ type: 'spring', stiffness: 420, damping: 30 }}
                   />
                 )}
-                <span style={{ position: 'relative', zIndex: 1 }}>{link.label}</span>
+                <span className="relative z-10">{item.label}</span>
               </button>
             );
           })}
         </nav>
 
-        {/* Right Tools: Live Clock, Status, Sound & Theme Toggle */}
-        <div className="hidden lg:flex items-center gap-2.5">
-          {/* Live IST clock (31 OCT 2026 // 04:30:25 PM IST) */}
-          <div
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: 10,
-              color: 'var(--text-muted)',
-              letterSpacing: '0.04em',
-              background: 'var(--surface)',
-              border: '1px solid var(--border)',
-              borderRadius: 8,
-              padding: '0.35rem 0.75rem',
-              boxShadow: 'var(--shadow-sm)',
-              userSelect: 'none',
-            }}
-          >
-            {time || 'CONNECTING...'}
-          </div>
+        {/* Right: Actions (Resume, Theme Toggle & Contact CTA) */}
+        <div className="flex items-center gap-2">
+          {/* Resume Viewer / Download Button */}
+          {onOpenResume && (
+            <button
+              onClick={onOpenResume}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-sans text-xs font-semibold text-[var(--text-primary)] hover:text-white bg-[var(--surface)] hover:bg-[var(--secondary)] border border-[var(--border)] hover:border-[var(--electric-blue)] transition-all cursor-pointer shadow-sm hover:shadow-[0_0_12px_-2px_rgba(88,101,242,0.4)]"
+              title="View / Download Resume"
+            >
+              <FileText className="w-3.5 h-3.5 text-[var(--electric-blue)]" />
+              <span>Resume</span>
+            </button>
+          )}
 
-          {/* Animated System Status (Terminal Green) */}
-          <div
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: 10,
-              color: 'var(--terminal-green)',
-              fontWeight: 700,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
-              background: 'var(--mint-dim)',
-              border: '1px solid var(--terminal-green)',
-              borderRadius: 8,
-              padding: '0.35rem 0.65rem',
-              letterSpacing: '0.04em',
-            }}
-          >
-            <span
-              style={{
-                width: 6,
-                height: 6,
-                borderRadius: '50%',
-                background: 'var(--terminal-green)',
-                display: 'inline-block',
-              }}
-              className="animate-pulse-terminal"
-            />
-            NEXUS_ACTIVE
-          </div>
-
-          {/* Subtle Audio Toggle (Web Audio API) */}
-          <button
-            onClick={handleSoundToggle}
-            onMouseEnter={playCyberHover}
-            style={{
-              background: 'var(--surface)',
-              border: '1px solid var(--border)',
-              borderRadius: 8,
-              padding: '0.45rem',
-              cursor: 'pointer',
-              color: soundOn ? 'var(--neon-cyan)' : 'var(--text-secondary)',
-              boxShadow: 'var(--shadow-sm)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              transition: 'all 0.2s',
-            }}
-            className="hover:border-[var(--neon-cyan)] focus:outline-none"
-            aria-label={soundOn ? 'Mute Interface Sound' : 'Enable Cyber Interface Sound'}
-            title={soundOn ? 'Sound FX Enabled (Click to Mute)' : 'Sound FX Muted (Click to Enable)'}
-          >
-            {soundOn ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4 opacity-60" />}
-          </button>
-
-          {/* Theme switcher */}
+          {/* Theme Toggle Button */}
           <button
             onClick={toggleTheme}
-            onMouseEnter={playCyberHover}
+            className="p-2 rounded-xl transition-all cursor-pointer focus:outline-none"
             style={{
               background: 'var(--surface)',
               border: '1px solid var(--border)',
-              borderRadius: 8,
-              padding: '0.45rem',
-              cursor: 'pointer',
-              color: 'var(--text-secondary)',
-              boxShadow: 'var(--shadow-sm)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              transition: 'all 0.2s',
-            }}
-            className="hover:border-[var(--electric-blue)] hover:text-[var(--electric-blue)] focus:outline-none"
-            aria-label="Toggle theme"
-            title={theme === 'light' ? 'Switch to Dark Cyber Mode' : 'Switch to Light Mode'}
-          >
-            {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4 text-[#FFB800]" />}
-          </button>
-        </div>
-
-        {/* Mobile menu trigger */}
-        <div className="flex lg:hidden items-center gap-2">
-          <button
-            onClick={handleSoundToggle}
-            style={{
-              background: 'var(--surface)',
-              border: '1px solid var(--border)',
-              borderRadius: 8,
-              padding: '0.45rem',
-              cursor: 'pointer',
-              color: soundOn ? 'var(--neon-cyan)' : 'var(--text-secondary)',
-            }}
-            aria-label="Toggle sound"
-          >
-            {soundOn ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4 opacity-60" />}
-          </button>
-
-          <button
-            onClick={toggleTheme}
-            style={{
-              background: 'var(--surface)',
-              border: '1px solid var(--border)',
-              borderRadius: 8,
-              padding: '0.45rem',
-              cursor: 'pointer',
-              color: 'var(--text-secondary)',
-            }}
-            aria-label="Toggle theme"
-          >
-            {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4 text-[#FFB800]" />}
-          </button>
-
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            style={{
-              background: 'var(--surface)',
-              border: '1px solid var(--border)',
-              borderRadius: 8,
-              padding: '0.45rem',
-              cursor: 'pointer',
               color: 'var(--text-primary)',
             }}
-            aria-label="Toggle menu"
+            title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+            aria-label="Toggle theme"
           >
-            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {theme === 'light' ? (
+              <Moon className="w-4 h-4 text-[var(--electric-blue)]" />
+            ) : (
+              <Sun className="w-4 h-4 text-[#FFB800]" />
+            )}
+          </button>
+
+          {/* Quick Contact CTA */}
+          <button
+            onClick={() => scrollTo('contact')}
+            className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl font-sans text-xs font-semibold cursor-pointer transition-all"
+            style={{
+              background: 'linear-gradient(135deg, var(--electric-blue), var(--violet))',
+              color: '#FFFFFF',
+              boxShadow: '0 4px 14px -3px rgba(88, 101, 242, 0.45)',
+            }}
+          >
+            <span>Get in Touch</span>
+            <ArrowUpRight className="w-3.5 h-3.5" />
+          </button>
+
+          {/* Mobile Hamburger Toggle */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 rounded-xl text-[var(--text-primary)] focus:outline-none"
+            style={{
+              background: 'var(--surface)',
+              border: '1px solid var(--border)',
+            }}
+            aria-label="Toggle mobile menu"
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Slide-Down Drawer */}
       <AnimatePresence>
-        {mobileOpen && (
+        {mobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.25 }}
+            className="md:hidden border-b overflow-hidden"
             style={{
               background: 'var(--surface)',
-              borderBottom: '1px solid var(--border)',
-              overflow: 'hidden',
+              borderColor: 'var(--border)',
             }}
-            className="lg:hidden px-6 py-4 flex flex-col gap-3"
           >
-            <div
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: 10,
-                color: 'var(--text-muted)',
-                paddingBottom: '0.5rem',
-                borderBottom: '1px solid var(--border)',
-              }}
-            >
-              {time}
-            </div>
-
-            {NAV_LINKS.map((link) => {
-              const isActive = activeSection === link.id;
-              return (
+            <div className="px-5 py-4 flex flex-col gap-2">
+              {NAV_ITEMS.map((item) => (
                 <button
-                  key={link.id}
-                  onClick={() => scrollTo(link.id)}
-                  style={{
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: 13,
-                    fontWeight: 700,
-                    textAlign: 'left',
-                    padding: '0.55rem 0',
-                    color: isActive ? 'var(--neon-cyan)' : 'var(--text-primary)',
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}
+                  key={item.id}
+                  onClick={() => scrollTo(item.id)}
+                  className={`text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    activeTab === item.id
+                      ? 'bg-[var(--accent-dim)] text-[var(--neon-cyan)] font-semibold'
+                      : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                  }`}
                 >
-                  <span>{link.label}</span>
-                  {isActive && (
-                    <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--neon-cyan)' }} />
-                  )}
+                  {item.label}
                 </button>
-              );
-            })}
+              ))}
+
+              {onOpenResume && (
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onOpenResume();
+                  }}
+                  className="w-full text-left px-3 py-2 rounded-lg text-sm font-semibold text-[var(--electric-blue)] hover:bg-[var(--secondary)] flex items-center gap-2 border border-[var(--border)]"
+                >
+                  <FileText className="w-4 h-4" />
+                  <span>View / Download Resume</span>
+                </button>
+              )}
+
+              <div className="pt-2 border-t border-[var(--border)] mt-1 flex items-center justify-between">
+                <span className="text-xs text-[var(--text-muted)] font-mono">
+                  Theme: {theme === 'light' ? 'Light' : 'Dark'}
+                </span>
+                <button
+                  onClick={() => scrollTo('contact')}
+                  className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-[var(--electric-blue)]"
+                >
+                  Get in Touch
+                </button>
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

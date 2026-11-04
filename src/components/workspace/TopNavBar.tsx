@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Terminal, Search, Sun, Moon, Volume2, VolumeX, Menu, X, Command } from 'lucide-react';
+import { Search, Sun, Moon, Volume2, VolumeX, Menu, X, Command } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../../contexts/ThemeContext';
 import { isSoundEnabled, toggleSound, playCyberClick, playCyberHover } from '../../utils/cyberAudio';
 import { useDigitalClock } from '../../utils/digitalClock';
 import { WORKSPACE_SECTIONS } from './types';
 import type { SectionId } from './types';
+import { BrandLogo } from '../common/BrandLogo';
 
 interface TopNavBarProps {
   activeSection: SectionId;
@@ -52,40 +53,7 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
             className="flex items-center gap-2.5 group cursor-pointer focus:outline-none"
             style={{ background: 'none', border: 'none', padding: 0 }}
           >
-            <div
-              style={{
-                width: 30,
-                height: 30,
-                borderRadius: 7,
-                background: 'linear-gradient(135deg, var(--electric-blue), var(--violet))',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 0 14px -2px color-mix(in srgb, var(--electric-blue) 60%, transparent)',
-                border: '1px solid var(--neon-cyan)',
-              }}
-              className="group-hover:scale-105 transition-transform"
-            >
-              <Terminal className="w-3.5 h-3.5 text-white" />
-            </div>
-
-            <div className="flex items-center gap-1.5">
-              <span
-                style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  fontWeight: 800,
-                  fontSize: '1.05rem',
-                  color: 'var(--text-primary)',
-                  letterSpacing: '-0.02em',
-                }}
-                className="group-hover:text-[var(--neon-cyan)] transition-colors flex items-center gap-1.5"
-              >
-                Praveen.exe
-                <span className="font-mono text-[9px] px-1.5 py-0.5 rounded bg-[var(--surface)] text-[var(--neon-cyan)] border border-[var(--border)] font-bold uppercase tracking-wider hidden lg:inline">
-                  WORKSPACE
-                </span>
-              </span>
-            </div>
+            <BrandLogo variant="horizontal" showTag={true} tagText="WORKSPACE" />
           </button>
 
           {/* Animated Online Status Indicator */}

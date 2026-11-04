@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
+import { ExternalLink, CheckCircle2, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ExternalLink, X, Layers, CheckCircle2 } from 'lucide-react';
 import { PROJECTS_DATA, type ProjectItem } from '../data/projects';
 import { GithubIcon } from './common/SocialIcons';
-import { playCyberClick, playCyberHover } from '../utils/cyberAudio';
-import { LinuxLogo, PythonLogo, CloudLogo, CLogo } from './common/TechLogos';
+import { SpotlightCard } from './common/SpotlightCard';
 
 type FilterTag = 'all' | 'security' | 'systems' | 'ml';
 
 const FILTERS: { label: string; value: FilterTag }[] = [
-  { label: 'ALL MISSIONS [06]', value: 'all' },
-  { label: 'SECURITY & AI', value: 'security' },
-  { label: 'SYSTEMS & WEB', value: 'systems' },
-  { label: 'ACADEMIC ML', value: 'ml' },
+  { label: 'All Projects', value: 'all' },
+  { label: 'Security & AI', value: 'security' },
+  { label: 'Systems & C', value: 'systems' },
+  { label: 'Machine Learning', value: 'ml' },
 ];
 
 export const Projects: React.FC = () => {
@@ -25,624 +24,236 @@ export const Projects: React.FC = () => {
   });
 
   return (
-    <section
-      id="projects"
-      style={{
-        padding: '6rem 0',
-        borderBottom: '1px solid var(--border)',
-        background: 'var(--surface-alt, var(--bg))',
-        position: 'relative',
-        overflow: 'hidden',
-      }}
-    >
-      {/* Ghost Number */}
-      <span
-        className="ghost-num"
-        style={{
-          position: 'absolute',
-          right: '3%',
-          top: '6%',
-          fontSize: 'clamp(7rem, 18vw, 14rem)',
-          pointerEvents: 'none',
-          userSelect: 'none',
-          opacity: 0.35,
-        }}
-      >
-        02
-      </span>
-
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 1.5rem', position: 'relative', zIndex: 1 }}>
-        {/* Section Header & Filters */}
+    <section id="projects" className="py-20 border-t border-[var(--border)] relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
-          style={{ paddingBottom: '2.5rem', borderBottom: '1px solid var(--border)', marginBottom: '3.5rem' }}
-          className="flex flex-col md:flex-row md:items-end justify-between gap-6"
+          transition={{ duration: 0.4 }}
+          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 text-left"
         >
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.75rem' }}>
-              <span
-                style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: 2,
-                  background: 'var(--electric-blue)',
-                  boxShadow: '0 0 10px var(--electric-blue)',
-                }}
-              />
-              <span
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 11,
-                  color: 'var(--electric-blue)',
-                  fontWeight: 800,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.08em',
-                }}
-              >
-                MISSION CONTROL // PROJECTS
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[var(--electric-blue)]" />
+              <span className="font-mono text-xs font-bold text-[var(--electric-blue)] uppercase tracking-wider">
+                Showcase
               </span>
             </div>
-
-            <h2
-              style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                fontWeight: 800,
-                fontSize: 'clamp(2rem, 4vw, 3.5rem)',
-                letterSpacing: '-0.03em',
-                color: 'var(--text-primary)',
-                margin: 0,
-                lineHeight: 1.1,
-              }}
-            >
-              MISSION CONTROL // PROJECTS
+            <h2 className="font-space font-extrabold text-3xl sm:text-4xl text-[var(--text-primary)] m-0">
+              Featured Projects
             </h2>
-
-            <p
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: '1rem',
-                color: 'var(--text-secondary)',
-                marginTop: '0.75rem',
-                maxWidth: 580,
-                lineHeight: 1.6,
-              }}
-            >
-              Six genuine engineering systems spanning defensive network AI, full-stack civic platforms, and low-level Linux systems programming.
+            <p className="font-sans text-sm sm:text-base text-[var(--text-secondary)] max-w-xl mt-1">
+              Practical software engineering, systems programming, and cybersecurity research projects.
             </p>
           </div>
 
-          {/* Interactive Mission Filter Tabs */}
+          {/* Filter Chips with Gliding Spring Pill */}
           <div
-            className="flex flex-wrap gap-1.5 p-1.5 rounded-2xl"
-            style={{
-              background: 'var(--surface)',
-              border: '1px solid var(--border)',
-              boxShadow: 'var(--shadow-sm), var(--clay-specular)',
-            }}
+            className="flex flex-wrap items-center gap-1.5 p-1 rounded-xl w-fit"
+            style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
           >
             {FILTERS.map((f) => {
-              const active = filter === f.value;
+              const isSelected = filter === f.value;
               return (
                 <button
                   key={f.value}
-                  onClick={() => {
-                    playCyberClick(760, 0.03);
-                    setFilter(f.value);
-                  }}
-                  onMouseEnter={playCyberHover}
-                  style={{
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: 11,
-                    fontWeight: active ? 800 : 600,
-                    letterSpacing: '0.04em',
-                    color: active ? '#FFFFFF' : 'var(--text-secondary)',
-                    background: active
-                      ? 'linear-gradient(135deg, var(--electric-blue), var(--cyber-violet))'
-                      : 'transparent',
-                    border: 'none',
-                    borderRadius: 12,
-                    padding: '0.45rem 0.85rem',
-                    cursor: 'pointer',
-                    boxShadow: active ? '0 4px 14px color-mix(in srgb, var(--electric-blue) 45%, transparent)' : 'none',
-                    transition: 'all 0.2s',
-                  }}
+                  onClick={() => setFilter(f.value)}
+                  className={`relative px-3.5 py-1.5 rounded-lg text-xs font-sans font-medium transition-all cursor-pointer focus:outline-none ${
+                    isSelected
+                      ? 'text-white font-semibold'
+                      : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                  }`}
                 >
-                  {f.label}
+                  {isSelected && (
+                    <motion.div
+                      layoutId="projectFilterPill"
+                      className="absolute inset-0 rounded-lg bg-[var(--electric-blue)] shadow-sm"
+                      transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+                    />
+                  )}
+                  <span className="relative z-10">{f.label}</span>
                 </button>
               );
             })}
           </div>
         </motion.div>
 
-        {/* Project Grid with 3D Cyber Hover */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {filtered.map((project, idx) => {
-            return (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.08, ease: 'easeOut' }}
-                onMouseEnter={playCyberHover}
-                className="clay clay-hover relative flex flex-col justify-between p-7 sm:p-8"
+        {/* Project Card Grid with Cursor Spotlight */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filtered.map((project, idx) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: idx * 0.05 }}
+              whileHover={{ y: -5, transition: { type: 'spring', stiffness: 350, damping: 25 } }}
+              className="h-full"
+            >
+              <SpotlightCard
+                spotlightColor="rgba(83, 109, 255, 0.15)"
+                className="h-full p-6 rounded-2xl flex flex-col justify-between text-left transition-all duration-300 hover:shadow-xl hover:border-[var(--electric-blue)]"
                 style={{
                   background: 'var(--surface)',
                   border: '1px solid var(--border)',
-                  borderRadius: '1.4rem',
+                  boxShadow: 'var(--shadow-sm)',
                 }}
               >
-                {/* HUD Corner Brackets */}
-                <div className="hud-corner-tl" />
-                <div className="hud-corner-br" />
-
-                <div>
-                  {/* Card Meta Bar */}
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      paddingBottom: '1rem',
-                      marginBottom: '1.25rem',
-                      borderBottom: '1px solid var(--border)',
-                      fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: 11,
-                    }}
-                  >
-                    <span
-                      style={{
-                        color: 'var(--neon-cyan)',
-                        fontWeight: 800,
-                        fontSize: '0.9rem',
-                        letterSpacing: '0.06em',
-                      }}
-                    >
-                      MISSION // {project.number}
+                {/* Card Header & Badges */}
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-mono text-[10px] font-bold px-2.5 py-0.5 rounded-md bg-[var(--accent-dim)] text-[var(--electric-blue)] border border-[var(--electric-blue)] uppercase">
+                      {project.category}
                     </span>
-
-                    <span
-                      style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: 10,
-                        fontWeight: 800,
-                        letterSpacing: '0.05em',
-                        padding: '0.2rem 0.65rem',
-                        borderRadius: 6,
-                        border: `1px solid ${
-                          project.isAcademicOnly ? 'var(--cyber-violet)' : 'var(--terminal-green)'
-                        }`,
-                        color: project.isAcademicOnly ? 'var(--cyber-violet)' : 'var(--terminal-green)',
-                        background: project.isAcademicOnly ? 'var(--accent-2-dim)' : 'var(--mint-dim)',
-                      }}
-                    >
-                      {project.academicBadge || project.category}
+                    <span className="font-mono text-xs text-[var(--text-muted)] font-medium">
+                      {project.academicBadge ? project.academicBadge : (project.repoUrl ? 'Open Source' : 'Research')}
                     </span>
                   </div>
 
-                  {/* Project Title */}
-                  <h3
-                    style={{
-                      fontFamily: "'Space Grotesk', sans-serif",
-                      fontWeight: 800,
-                      fontSize: 'clamp(1.3rem, 2.2vw, 1.65rem)',
-                      color: 'var(--text-primary)',
-                      lineHeight: 1.25,
-                      marginBottom: '0.75rem',
-                      letterSpacing: '-0.02em',
-                    }}
-                  >
+                  <h3 className="font-space font-bold text-lg text-[var(--text-primary)] leading-snug m-0">
                     {project.title}
                   </h3>
 
-                  {/* 1-2 Line Description */}
-                  <p
-                    style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: '0.92rem',
-                      color: 'var(--text-secondary)',
-                      lineHeight: 1.6,
-                      marginBottom: '1.5rem',
-                    }}
-                  >
+                  <p className="font-sans text-xs text-[var(--text-secondary)] leading-relaxed line-clamp-3 m-0">
                     {project.description}
                   </p>
+                </div>
 
-                  {/* Core 4-Tech Pillar Integrations */}
-                  <div className="flex flex-wrap items-center gap-1.5 mb-3">
-                    {project.technologies.some((t) => t.toLowerCase().includes('python')) && (
-                      <span
-                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold"
-                        style={{
-                          background: 'rgba(56, 126, 184, 0.14)',
-                          color: '#387EB8',
-                          border: '1px solid rgba(56, 126, 184, 0.35)',
-                        }}
-                        title="Python Architecture"
-                      >
-                        <PythonLogo size={12} />
-                        <span>PYTHON</span>
-                      </span>
-                    )}
-                    {(project.technologies.some((t) => t.toLowerCase().includes('linux')) ||
-                      project.id === 'hospital-management-c') && (
-                      <span
-                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold"
-                        style={{
-                          background: 'rgba(255, 165, 0, 0.12)',
-                          color: '#FFA500',
-                          border: '1px solid rgba(255, 165, 0, 0.35)',
-                        }}
-                        title="Linux Environment"
-                      >
-                        <LinuxLogo size={12} />
-                        <span>LINUX</span>
-                      </span>
-                    )}
-                    {(project.technologies.some((t) => t.includes('C (ANSI') || t === 'C') ||
-                      project.id === 'hospital-management-c') && (
-                      <span
-                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold"
-                        style={{
-                          background: 'rgba(0, 89, 156, 0.14)',
-                          color: '#5294E2',
-                          border: '1px solid rgba(0, 89, 156, 0.35)',
-                        }}
-                        title="C Procedural Systems"
-                      >
-                        <CLogo size={12} />
-                        <span>C PROGRAMMING</span>
-                      </span>
-                    )}
-                    {(project.id === 'sih-attack-forecasting' || project.id === 'smart-bharat-ai') && (
-                      <span
-                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold"
-                        style={{
-                          background: 'rgba(0, 229, 255, 0.12)',
-                          color: 'var(--neon-cyan)',
-                          border: '1px solid rgba(0, 229, 255, 0.35)',
-                        }}
-                        title="Cloud Computing &amp; API Layer"
-                      >
-                        <CloudLogo size={12} />
-                        <span>CLOUD</span>
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Technology Text Badges */}
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {project.technologies.map((tech) => (
+                {/* Card Footer: Tech Tags & Links */}
+                <div className="pt-5 mt-5 border-t border-[var(--border)] flex flex-col gap-3">
+                  <div className="flex flex-wrap gap-1.5">
+                    {project.technologies.slice(0, 4).map((tech) => (
                       <span
                         key={tech}
-                        style={{
-                          fontFamily: "'JetBrains Mono', monospace",
-                          fontSize: 10,
-                          fontWeight: 700,
-                          color: 'var(--text-primary)',
-                          background: 'var(--surface-alt, var(--bg))',
-                          border: '1px solid var(--border)',
-                          borderRadius: 6,
-                          padding: '0.2rem 0.55rem',
-                          letterSpacing: '0.04em',
-                        }}
+                        className="px-2 py-0.5 rounded-md font-mono text-[10px] text-[var(--text-muted)] bg-[var(--secondary)] border border-[var(--border)]"
                       >
                         {tech}
                       </span>
                     ))}
+                    {project.technologies.length > 4 && (
+                      <span className="px-1.5 py-0.5 font-mono text-[10px] text-[var(--text-muted)]">
+                        +{project.technologies.length - 4}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex items-center justify-between gap-2 pt-1">
+                    <button
+                      onClick={() => setActiveProject(project)}
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--electric-blue)] hover:text-[var(--neon-cyan)] transition-colors cursor-pointer"
+                    >
+                      <span>Read Details</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </button>
+
+                    {project.repoUrl && (
+                      <a
+                        href={project.repoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-1.5 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--secondary)] transition-colors"
+                        title="View GitHub Repository"
+                        aria-label="GitHub Repository"
+                      >
+                        <GithubIcon className="w-4 h-4" />
+                      </a>
+                    )}
                   </div>
                 </div>
-
-                {/* Bottom Action Footer */}
-                <div
-                  style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    gap: '0.75rem',
-                    paddingTop: '1.25rem',
-                    borderTop: '1px solid var(--border)',
-                  }}
-                >
-                  <button
-                    onClick={() => {
-                      playCyberClick(840, 0.04);
-                      setActiveProject(project);
-                    }}
-                    onMouseEnter={playCyberHover}
-                    className="clay-btn clay-btn-ghost"
-                    style={{ padding: '0.6rem 1.15rem' }}
-                  >
-                    <span>VIEW ARCHITECTURE</span>
-                    <Layers className="w-3.5 h-3.5 text-[var(--neon-cyan)]" />
-                  </button>
-
-                  {project.repoUrl ? (
-                    <a
-                      href={project.repoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onMouseEnter={playCyberHover}
-                      className="clay-btn clay-btn-primary"
-                      style={{ padding: '0.6rem 1.15rem' }}
-                    >
-                      <GithubIcon className="w-4 h-4" />
-                      <span>GITHUB REPO</span>
-                      <ExternalLink className="w-3.5 h-3.5" />
-                    </a>
-                  ) : (
-                    <span
-                      style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: 10,
-                        color: 'var(--text-muted)',
-                        padding: '0.5rem 0',
-                        letterSpacing: '0.04em',
-                      }}
-                    >
-                      ACADEMIC ARCHIVE // EWIT
-                    </span>
-                  )}
-                </div>
-              </motion.div>
-            );
-          })}
+              </SpotlightCard>
+            </motion.div>
+          ))}
         </div>
       </div>
 
-      {/* Architecture Pipeline Specification Modal */}
+      {/* Project Details Modal */}
       <AnimatePresence>
         {activeProject && (
           <div
-            style={{
-              position: 'fixed',
-              inset: 0,
-              zIndex: 100,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '1.5rem',
-            }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+            onClick={() => setActiveProject(null)}
           >
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setActiveProject(null)}
-              style={{
-                position: 'absolute',
-                inset: 0,
-                backgroundColor: 'rgba(8, 10, 18, 0.85)',
-                backdropFilter: 'blur(8px)',
-              }}
-            />
-
-            {/* Modal Dialog */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
-              className="clay relative"
+              onClick={(e) => e.stopPropagation()}
+              className="max-w-2xl w-full p-6 sm:p-8 rounded-2xl flex flex-col gap-5 text-left max-h-[85vh] overflow-y-auto relative"
               style={{
-                width: '100%',
-                maxWidth: 680,
-                maxHeight: '90vh',
-                overflowY: 'auto',
                 background: 'var(--surface)',
-                borderRadius: '1.4rem',
-                border: '1px solid var(--neon-cyan)',
-                padding: '2rem',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '1.5rem',
-                boxShadow: 'var(--shadow-lg), 0 0 25px -5px color-mix(in srgb, var(--neon-cyan) 35%, transparent)',
-                zIndex: 101,
+                border: '1px solid var(--border)',
+                boxShadow: 'var(--shadow-lg)',
               }}
             >
-              {/* HUD Corner Brackets */}
-              <div className="hud-corner-tl" />
-              <div className="hud-corner-br" />
-
-              {/* Modal Header */}
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  justifyContent: 'space-between',
-                  paddingBottom: '1rem',
-                  borderBottom: '1px solid var(--border)',
-                }}
+              <button
+                onClick={() => setActiveProject(null)}
+                className="absolute top-4 right-4 p-2 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors focus:outline-none"
+                aria-label="Close dialog"
               >
-                <div>
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--neon-cyan)', fontWeight: 800 }}>
-                    MISSION // {activeProject.number} ARCHITECTURE
-                  </div>
-                  <h3
-                    style={{
-                      fontFamily: "'Space Grotesk', sans-serif",
-                      fontWeight: 800,
-                      fontSize: '1.6rem',
-                      color: 'var(--text-primary)',
-                      margin: '0.25rem 0 0',
-                    }}
-                  >
-                    {activeProject.title}
-                  </h3>
-                </div>
+                <X className="w-5 h-5" />
+              </button>
 
-                <button
-                  onClick={() => setActiveProject(null)}
-                  style={{
-                    background: 'var(--surface-alt, var(--bg))',
-                    border: '1px solid var(--border)',
-                    borderRadius: 10,
-                    padding: '0.45rem',
-                    color: 'var(--text-primary)',
-                    cursor: 'pointer',
-                  }}
-                  className="hover:text-[var(--neon-cyan)]"
-                  aria-label="Close dialog"
-                >
-                  <X className="w-5 h-5" />
-                </button>
+              <div>
+                <span className="font-mono text-xs text-[var(--electric-blue)] font-bold uppercase tracking-wider">
+                  {activeProject.category}
+                </span>
+                <h3 className="font-space font-extrabold text-2xl text-[var(--text-primary)] mt-1 mb-0">
+                  {activeProject.title}
+                </h3>
               </div>
 
-              {/* Overview */}
-              <p
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: '0.92rem',
-                  lineHeight: 1.6,
-                  color: 'var(--text-secondary)',
-                  margin: 0,
-                }}
-              >
-                {activeProject.overview}
+              <p className="font-sans text-sm text-[var(--text-secondary)] leading-relaxed m-0">
+                {activeProject.overview || activeProject.description}
               </p>
 
-              {/* Execution Pipeline Stages */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: 11,
-                    fontWeight: 800,
-                    color: 'var(--text-primary)',
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  <Layers className="w-4 h-4" style={{ color: 'var(--electric-blue)' }} />
-                  <span>EXECUTION PIPELINE STAGES</span>
+              {activeProject.keyHighlights && activeProject.keyHighlights.length > 0 && (
+                <div>
+                  <h4 className="font-space font-bold text-sm text-[var(--text-primary)] mb-2">
+                    Key Highlights &amp; Architecture:
+                  </h4>
+                  <ul className="flex flex-col gap-2 p-0 m-0 list-none text-xs text-[var(--text-secondary)]">
+                    {activeProject.keyHighlights.map((h, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-[var(--green)] shrink-0 mt-0.5" />
+                        <span>{h}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
+              )}
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {activeProject.architecture.map((step, i) => (
-                    <div
-                      key={i}
-                      style={{
-                        padding: '0.9rem 1rem',
-                        borderRadius: 12,
-                        background: 'var(--surface-alt, var(--bg))',
-                        border: '1px solid var(--border)',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '0.25rem',
-                      }}
+              <div>
+                <h4 className="font-space font-bold text-xs text-[var(--text-muted)] uppercase tracking-wider mb-2">
+                  Technologies Used:
+                </h4>
+                <div className="flex flex-wrap gap-1.5">
+                  {activeProject.technologies.map((t) => (
+                    <span
+                      key={t}
+                      className="px-2.5 py-1 rounded-lg font-mono text-xs bg-[var(--secondary)] text-[var(--text-primary)] border border-[var(--border)]"
                     >
-                      <span
-                        style={{
-                          fontFamily: "'JetBrains Mono', monospace",
-                          fontSize: 10,
-                          color: 'var(--neon-cyan)',
-                          fontWeight: 800,
-                        }}
-                      >
-                        STAGE 0{i + 1}
-                      </span>
-                      <p
-                        style={{
-                          fontFamily: "'Inter', sans-serif",
-                          fontSize: '0.85rem',
-                          color: 'var(--text-primary)',
-                          fontWeight: 500,
-                          margin: 0,
-                        }}
-                      >
-                        {step}
-                      </p>
-                    </div>
+                      {t}
+                    </span>
                   ))}
                 </div>
               </div>
 
-              {/* Highlights & Security Posture */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: 11,
-                    fontWeight: 800,
-                    color: 'var(--text-primary)',
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  <CheckCircle2 className="w-4 h-4" style={{ color: 'var(--terminal-green)' }} />
-                  <span>KEY SYSTEM HIGHLIGHTS</span>
-                </div>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  {activeProject.keyHighlights.map((hl, i) => (
-                    <div
-                      key={i}
-                      style={{
-                        padding: '0.8rem 1rem',
-                        borderRadius: 12,
-                        background: 'var(--surface-alt, var(--bg))',
-                        border: '1px solid var(--border)',
-                        boxShadow: 'var(--shadow-sm)',
-                        display: 'flex',
-                        alignItems: 'flex-start',
-                        gap: '0.65rem',
-                        fontSize: '0.85rem',
-                        color: 'var(--text-secondary)',
-                      }}
-                    >
-                      <span
-                        style={{
-                          width: 6,
-                          height: 6,
-                          borderRadius: '50%',
-                          background: 'var(--terminal-green)',
-                          marginTop: 6,
-                          flexShrink: 0,
-                        }}
-                      />
-                      <span>{hl}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Modal Footer */}
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  paddingTop: '1rem',
-                  borderTop: '1px solid var(--border)',
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 11,
-                }}
-              >
-                <span style={{ color: 'var(--text-muted)' }}>
-                  {activeProject.isAcademicOnly ? 'ACADEMIC COURSEWORK' : 'OPEN SOURCE REPOSITORY'}
-                </span>
-
-                {activeProject.repoUrl && (
+              {activeProject.repoUrl && (
+                <div className="pt-3 border-t border-[var(--border)] flex justify-end">
                   <a
                     href={activeProject.repoUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="clay-btn clay-btn-primary"
-                    style={{ padding: '0.55rem 1.15rem' }}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl font-sans text-xs font-semibold text-white bg-[var(--electric-blue)] hover:brightness-110 transition-all"
                   >
-                    <span>VIEW ON GITHUB</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
+                    <GithubIcon className="w-3.5 h-3.5" />
+                    <span>View on GitHub</span>
+                    <ExternalLink className="w-3 h-3" />
                   </a>
-                )}
-              </div>
+                </div>
+              )}
             </motion.div>
           </div>
         )}

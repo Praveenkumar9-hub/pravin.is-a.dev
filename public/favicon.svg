@@ -1,9 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <rect width="32" height="32" rx="8" fill="#080B14"/>
-  <rect x="0.5" y="0.5" width="31" height="31" rx="7.5" stroke="#536DFF" stroke-opacity="0.4"/>
-  <!-- Cyberfunk Monogram P -->
-  <path d="M9 24V8H17C19.2091 8 21 9.79086 21 12C21 14.2091 19.2091 16 17 16H9" stroke="#00E5FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <!-- .exe subtext / dot -->
-  <circle cx="23" cy="22" r="2" fill="#A66BFF"/>
-  <text x="14" y="25" fill="#00F5A0" font-family="monospace" font-size="6" font-weight="bold">.exe</text>
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <linearGradient id="praveenCyberGrad" x1="6" y1="4" x2="25" y2="27.5" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00E5FF"/>
+      <stop offset="55%" stop-color="#5865F2"/>
+      <stop offset="100%" stop-color="#8B5CF6"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="7.5" fill="#080B16"/>
+  <rect x="0.5" y="0.5" width="31" height="31" rx="7" stroke="#1C2539" stroke-width="1"/>
+  <!-- P-Shield Monogram with Terminal Prompt Counter -->
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M7 5H18L24.5 11.5L19 17H11.5V24L9.25 26.5L7 24V5ZM11.5 8.5H15.8L18 10.75L15.8 13H11.5V8.5Z" fill="url(#praveenCyberGrad)"/>
 </svg>

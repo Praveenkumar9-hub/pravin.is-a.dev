@@ -29,7 +29,7 @@ export const CertificatesView: React.FC = () => {
     Google: { badgeBg: 'var(--accent-dim)', textTone: 'var(--electric-blue)', border: 'var(--electric-blue)' },
     'Cisco Networking Academy': { badgeBg: 'var(--cyan-dim)', textTone: 'var(--neon-cyan)', border: 'var(--neon-cyan)' },
     'Infosys Springboard': { badgeBg: 'var(--accent-2-dim)', textTone: 'var(--violet)', border: 'var(--violet)' },
-    'Ethnotech Academy': { badgeBg: 'var(--mint-dim)', textTone: 'var(--green)', border: 'var(--green)' },
+    'Ethnotech Academy': { badgeBg: 'rgba(5, 102, 160, 0.15)', textTone: '#0084D1', border: '#0566A0' },
   };
 
   const filteredCerts = CERTIFICATES_DATA.filter((cert) => {
